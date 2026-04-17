@@ -19,16 +19,9 @@ return new class extends Migration
             $table->string('publisher');
             $table->string('city');
             $table->string('cover');
-            $table->unsignedBigInteger('bookshelf_id');
+            $table->foreignId('bookshelf_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+
             $table->timestamps();
-
-            //foreign
-            $table->foreign('bookshelf_id')
-                  ->references('id')
-                  ->on('bookshelfs')
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade');
-
         });
     }
 

@@ -1,34 +1,19 @@
 <?php
 
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/nama', function(){
-    return "Rafli";
+// route untuk menampilkan data dari model user
+Route::get('/users', function(){
+    $users = User::all();
+    return view('users.index', compact('users'));
 });
 
-Route::get('/npm', function(){
-    return "55201220";
-});
-
-Route::redirect('/nama','/npm');
-
-
-
-Route::get('/biodata/{nama?}', function($nama = "ujang"){
-    return view("mahasiswa");
-});
-
-
-
-Route::get('/biodatamhs', [MahasiswaController::class, 'TampilBiodata']);
-
-Route::get('/fotomhs', [MahasiswaController::class, 'Tampilfoto']);
-
-Route::get('/mhs/{nama}/{kelas}', function($nama, $kelas){
-    return view('mahasiswa', ['name' => $nama, 'kelas' => $kelas]);
-});
+// route untuk menampiln data dari model user melalui controller
+Route::get('/usersC', [UserController::class, 'index']);
