@@ -1,19 +1,26 @@
 <?php
 
-use App\Http\Controllers\MahasiswaController;
-use App\Http\Controllers\UserController;
-use App\Models\User;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// route untuk menampilkan data dari model user
-Route::get('/users', function(){
-    $users = User::all();
-    return view('users.index', compact('users'));
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// route untuk menampiln data dari model user melalui controller
-Route::get('/usersC', [UserController::class, 'index']);
+//kelola buku (pustakawan)
+Route::middleware(['auth', 'role:pustakawan'])->group(function(){
+    Route::view('/kelolabuku', 'kelolabuku');
+    Route::view('/kelolarak', 'kelolarak');
+});
+
+require __DIR__.'/auth.php';
